@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andean Dispatch | Agent Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #131826;
+            --bg-card: #1a2032;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #0ea5e9;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #1e293b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Login Screen */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0e1a 0%, #131826 50%, #1a2032 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            border-radius: 50%;
+            filter: blur(60px);
+        }
+
+        .login-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .login-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: 'Work Sans', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: 8px;
+            color: var(--bg-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .topbar {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .topbar-brand {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .btn-logout {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .main-container {
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-primary);
+        }
+
+        .metric-subtext {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .load-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .load-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .load-item:hover {
+            border-color: var(--accent-secondary);
+        }
+
+        .load-item.active {
+            border-color: var(--accent-primary);
+            background: rgba(0, 217, 255, 0.05);
+        }
+
+        .load-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
+        }
+
+        .load-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+
+        .load-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .load-status.in-transit {
+            background: rgba(14, 165, 233, 0.15);
+            color: var(--accent-secondary);
+        }
+
+        .load-status.pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .load-status.delivered {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .load-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .load-detail-item {
+            color: var(--text-secondary);
+        }
+
+        .load-detail-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .call-log-form {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: 'Work Sans', sans-serif;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .btn-submit {
+            padding: 0.875rem 2rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: 6px;
+            color: var(--bg-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 217, 255, 0.3);
+        }
+
+        .call-history {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .call-entry {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent-primary);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .call-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .call-type {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--accent-primary);
+        }
+
+        .call-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .call-party {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .call-notes {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-box">
+            <div class="login-logo">ANDEAN DISPATCH</div>
+            <div class="login-subtitle">Agent Command Center</div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Agent ID</label>
+                    <input type="text" class="form-input" id="agentId" placeholder="Enter your agent ID" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">PIN</label>
+                    <input type="password" class="form-input" id="agentPin" placeholder="****" required>
+                </div>
+                <button type="submit" class="btn-primary">Start Shift</button>
+            </form>
+            
+            <div style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+                Demo: Use any agent ID + PIN "1234"
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <!-- Top Bar -->
+        <div class="topbar">
+            <div class="topbar-brand">ANDEAN DISPATCH</div>
+            <div class="topbar-user">
+                <div class="user-info">
+                    <div class="user-name" id="userName">Agent</div>
+                    <div class="user-role">Dispatch Agent</div>
+                </div>
+                <button class="btn-logout" id="logoutBtn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-container">
+            <!-- Metrics Row -->
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="metric-label">Calls Today</div>
+                    <div class="metric-value" id="callsToday">0</div>
+                    <div class="metric-subtext">Active shift</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Revenue Generated</div>
+                    <div class="metric-value" id="revenueToday">$0</div>
+                    <div class="metric-subtext">@ $3.75 per call</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Active Loads</div>
+                    <div class="metric-value" id="activeLoads">6</div>
+                    <div class="metric-subtext">Requiring attention</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Avg Response Time</div>
+                    <div class="metric-value" id="avgResponse">—</div>
+                    <div class="metric-subtext">Today</div>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Active Loads -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Active Loads</h2>
+                    </div>
+                    <div class="load-list" id="loadList">
+                        <!-- Loads will be populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Call Logger -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Log Call</h2>
+                    </div>
+                    
+                    <div class="call-log-form">
+                        <form id="callLogForm" onsubmit="handleCallLog(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Call Type</label>
+                                    <select class="form-select" id="callType" required>
+                                        <option value="">Select type...</option>
+                                        <option value="check-in">Driver Check-in</option>
+                                        <option value="broker-update">Broker Update</option>
+                                        <option value="exception">Exception Handling</option>
+                                        <option value="delivery-confirm">Delivery Confirmation</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Party</label>
+                                    <input type="text" class="form-input" id="callParty" placeholder="e.g., Driver John, CH Robinson" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Notes</label>
+                                <textarea class="form-textarea" id="callNotes" placeholder="Call summary, updates, actions taken..." required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn-submit">Log Call</button>
+                        </form>
+                    </div>
+
+                    <div class="section-header" style="margin-top: 2rem;">
+                        <h3 style="font-size: 1rem; color: var(--text-secondary);">Call History (Today)</h3>
+                    </div>
+                    
+                    <div class="call-history" id="callHistory">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📞</div>
+                            <div>No calls logged yet today</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // App State
+        const state = {
+            currentUser: null,
+            selectedLoad: null,
+            calls: [],
+            loads: [
+                {
+                    id: 'LD-2847',
+                    status: 'in-transit',
+                    origin: 'Dallas, TX',
+                    destination: 'Denver, CO',
+                    driver: 'Mike Rodriguez',
+                    broker: 'TQL',
+                    eta: '14:30 MST'
+                },
+                {
+                    id: 'LD-2851',
+                    status: 'pending',
+                    origin: 'Atlanta, GA',
+                    destination: 'Miami, FL',
+                    driver: 'Sarah Chen',
+                    broker: 'CH Robinson',
+                    eta: '18:45 EST'
+                },
+                {
+                    id: 'LD-2856',
+                    status: 'in-transit',
+                    origin: 'Seattle, WA',
+                    destination: 'Portland, OR',
+                    driver: 'James Wilson',
+                    broker: 'XPO Logistics',
+                    eta: '11:15 PST'
+                },
+                {
+                    id: 'LD-2859',
+                    status: 'in-transit',
+                    origin: 'Chicago, IL',
+                    destination: 'Detroit, MI',
+                    driver: 'Maria Garcia',
+                    broker: 'Coyote',
+                    eta: '16:00 EST'
+                },
+                {
+                    id: 'LD-2862',
+                    status: 'pending',
+                    origin: 'Phoenix, AZ',
+                    destination: 'Las Vegas, NV',
+                    driver: 'Robert Kim',
+                    broker: 'Landstar',
+                    eta: '20:30 PST'
+                },
+                {
+                    id: 'LD-2865',
+                    status: 'in-transit',
+                    origin: 'Houston, TX',
+                    destination: 'New Orleans, LA',
+                    driver: 'Jennifer Patel',
+                    broker: 'Echo Global',
+                    eta: '13:15 CST'
+                }
+            ]
+        };
+
+        // DOM Elements
+        const loginScreen = document.getElementById('loginScreen');
+        const dashboard = document.getElementById('dashboard');
+        const loginForm = document.getElementById('loginForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userName = document.getElementById('userName');
+        const callLogForm = document.getElementById('callLogForm');
+        const callHistory = document.getElementById('callHistory');
+        const loadList = document.getElementById('loadList');
+
+        // Login Handler
+        function handleLogin(event) {
+            event.preventDefault();
+            const agentId = document.getElementById('agentId').value;
+            const pin = document.getElementById('agentPin').value;
+            
+            if (pin === '1234') {
+                state.currentUser = agentId;
+                userName.textContent = agentId;
+                loginScreen.style.display = 'none';
+                dashboard.classList.add('active');
+                renderLoads();
+            } else {
+                alert('Invalid PIN');
+            }
+        }
+
+        // Logout Handler
+        function handleLogout() {
+            state.currentUser = null;
+            state.calls = [];
+            dashboard.classList.remove('active');
+            loginScreen.style.display = 'flex';
+            loginForm.reset();
+            updateMetrics();
+        }
+
+        // Render Loads
+        function renderLoads() {
+            loadList.innerHTML = state.loads.map(load => `
+                <div class="load-item ${state.selectedLoad === load.id ? 'active' : ''}" onclick="selectLoad('${load.id}')">
+                    <div class="load-header">
+                        <div class="load-id">${load.id}</div>
+                        <div class="load-status ${load.status}">${load.status.replace('-', ' ')}</div>
+                    </div>
+                    <div class="load-details">
+                        <div>
+                            <div class="load-detail-label">Origin</div>
+                            <div class="load-detail-item">${load.origin}</div>
+                        </div>
+                        <div>
+                            <div class="load-detail-label">Destination</div>
+                            <div class="load-detail-item">${load.destination}</div>
+                        </div>
+                        <div>
+                            <div class="load-detail-label">Driver</div>
+                            <div class="load-detail-item">${load.driver}</div>
+                        </div>
+                        <div>
+                            <div class="load-detail-label">ETA</div>
+                            <div class="load-detail-item">${load.eta}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Select Load
+        function selectLoad(loadId) {
+            state.selectedLoad = loadId;
+            renderLoads();
+        }
+
+        // Call Log Handler
+        function handleCallLog(event) {
+            event.preventDefault();
+            
+            const callType = document.getElementById('callType').value;
+            const callParty = document.getElementById('callParty').value;
+            const callNotes = document.getElementById('callNotes').value;
+            
+            const call = {
+                id: Date.now(),
+                type: callType,
+                party: callParty,
+                notes: callNotes,
+                timestamp: new Date(),
+                loadId: state.selectedLoad
+            };
+            
+            state.calls.unshift(call);
+            renderCallHistory();
+            updateMetrics();
+            callLogForm.reset();
+            
+            // Show success feedback
+            const submitBtn = callLogForm.querySelector('.btn-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '✓ Call Logged';
+            submitBtn.style.background = 'var(--success)';
+            setTimeout(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.style.background = '';
+            }, 2000);
+        }
+
+        // Render Call History
+        function renderCallHistory() {
+            if (state.calls.length === 0) {
+                callHistory.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📞</div>
+                        <div>No calls logged yet today</div>
+                    </div>
+                `;
+                return;
+            }
+
+            callHistory.innerHTML = state.calls.map(call => {
+                const time = call.timestamp.toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+                
+                const typeLabels = {
+                    'check-in': 'Driver Check-in',
+                    'broker-update': 'Broker Update',
+                    'exception': 'Exception Handling',
+                    'delivery-confirm': 'Delivery Confirmation'
+                };
+                
+                return `
+                    <div class="call-entry">
+                        <div class="call-meta">
+                            <div class="call-type">${typeLabels[call.type]}</div>
+                            <div class="call-time">${time}</div>
+                        </div>
+                        <div class="call-party">${call.party}</div>
+                        <div class="call-notes">${call.notes}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Update Metrics
+        function updateMetrics() {
+            const callsToday = state.calls.length;
+            const revenue = callsToday * 3.75;
+            
+            document.getElementById('callsToday').textContent = callsToday;
+            document.getElementById('revenueToday').textContent = '$' + revenue.toFixed(2);
+            
+            if (callsToday > 0) {
+                document.getElementById('avgResponse').textContent = '< 5m';
+            }
+        }
+
+        // Initialize
+        renderLoads();
+    </script>
+</body>
+</html>
