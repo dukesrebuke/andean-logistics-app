@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Andean Logistics - Investment Memorandum</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'IBM Plex Sans', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 3rem 1.5rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header-card {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(6, 182, 212, 0.1));
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-glow {
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            position: relative;
+        }
+        
+        .subtitle {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            position: relative;
+        }
+        
+        .metric-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(14, 165, 233, 0.5);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin: 0.5rem 0;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        
+        .card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #0ea5e9;
+        }
+        
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .advantage-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .advantage-card:hover {
+            background: rgba(14, 165, 233, 0.1);
+            border-color: rgba(14, 165, 233, 0.3);
+        }
+        
+        .advantage-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        .advantage-desc {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+        
+        .calculator-section {
+            background: rgba(14, 165, 233, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .slider-container {
+            margin-bottom: 2rem;
+        }
+        
+        .slider-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            color: #94a3b8;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #0ea5e9, #06b6d4);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #0ea5e9;
+            cursor: pointer;
+            border: 2px solid #0f172a;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #0ea5e9;
+            cursor: pointer;
+            border: 2px solid #0f172a;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0ea5e9;
+        }
+        
+        .result-label {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 0.5rem;
+        }
+        
+        th {
+            padding: 1rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-align: left;
+        }
+        
+        td {
+            padding: 1rem;
+            color: #e2e8f0;
+            background: rgba(14, 165, 233, 0.05);
+        }
+        
+        tr:hover td {
+            background: rgba(14, 165, 233, 0.1);
+        }
+        
+        .phase-name {
+            font-weight: 600;
+            color: #0ea5e9;
+        }
+        
+        .use-funds-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .fund-item {
+            padding: 1.5rem;
+            background: rgba(14, 165, 233, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            text-align: center;
+        }
+        
+        .fund-label {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            margin-top: 0.75rem;
+        }
+        
+        .time-to-launch {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(6, 182, 212, 0.1));
+            border-radius: 12px;
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            text-align: center;
+        }
+        
+        .time-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0ea5e9;
+        }
+        
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .market-card {
+            padding: 2rem;
+            border-radius: 12px;
+        }
+        
+        .market-card.tam {
+            background: rgba(14, 165, 233, 0.05);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+        }
+        
+        .market-card.sam {
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+        
+        .market-card.carriers {
+            background: rgba(34, 211, 238, 0.05);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+        }
+        
+        .market-value {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .market-value.tam-color { color: #0ea5e9; }
+        .market-value.sam-color { color: #06b6d4; }
+        .market-value.carriers-color { color: #22d3ee; }
+        
+        .market-label {
+            color: #94a3b8;
+        }
+        
+        .market-description {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(241, 245, 249, 0.05);
+            border-radius: 12px;
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+        
+        .footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        
+        .footer p {
+            color: #64748b;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+        
+        .icon {
+            color: #0ea5e9;
+            margin-bottom: 0.5rem;
+        }
+        
+        .scenarios-table {
+            margin-top: 2rem;
+        }
+        
+        .scenario-row {
+            background: rgba(14, 165, 233, 0.05);
+            transition: background 0.3s ease;
+        }
+        
+        .scenario-row:hover {
+            background: rgba(14, 165, 233, 0.1);
+        }
+        
+        .bar-chart {
+            margin: 2rem 0;
+        }
+        
+        .bar-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: flex-end;
+        }
+        
+        .bar-label {
+            width: 150px;
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+        
+        .bars {
+            flex: 1;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .bar {
+            height: 40px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 0.75rem;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .bar-revenue {
+            background: #0ea5e9;
+        }
+        
+        .bar-margin {
+            background: #06b6d4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header-card">
+            <div class="header-glow"></div>
+            <h1>Project Andean Logistics</h1>
+            <p class="subtitle">Nearshore Dispatch Command Center | Medellín, Colombia</p>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">$20,000</div>
+                    <div class="metric-label">Capital Sought</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">13%</div>
+                    <div class="metric-label">Equity Offered</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">5-6</div>
+                    <div class="metric-label">Break-even Agents</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">$2.3B</div>
+                    <div class="metric-label">TAM</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="card">
+            <h2>Executive Summary</h2>
+            <p style="line-height: 1.8; color: #cbd5e1; font-size: 1.05rem;">
+                Project Andean Logistics provides nearshore dispatch, tracking, and broker communication services to U.S. freight operators from Medellín, Colombia. Operating during full U.S. business hours with transparent per-call billing, we deliver U.S.-grade operational performance at nearshore cost levels. Designed to reach cash-flow positivity at 5-6 agents, with expansion driven by disciplined reinvestment.
+            </p>
+        </div>
+
+        <!-- Competitive Advantages -->
+        <div class="advantages-grid" style="margin-bottom: 3rem;">
+            <div class="advantage-card">
+                <h3 class="advantage-title">Labor Arbitrage</h3>
+                <p class="advantage-desc">Colombian talent vs. U.S. domestic labor</p>
+            </div>
+            <div class="advantage-card">
+                <h3 class="advantage-title">Timezone Alignment</h3>
+                <p class="advantage-desc">Full real-time EST/CST coverage</p>
+            </div>
+            <div class="advantage-card">
+                <h3 class="advantage-title">Structural Efficiency</h3>
+                <p class="advantage-desc">Direct IC model avoiding EOR costs</p>
+            </div>
+        </div>
+
+        <!-- Interactive Calculator -->
+        <div class="card">
+            <h2>Interactive Unit Economics</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <div class="slider-container">
+                    <label class="slider-label">Calls per Day per Agent: <span id="callsValue">35</span></label>
+                    <input type="range" id="callsSlider" min="20" max="50" value="35">
+                </div>
+                <div class="slider-container">
+                    <label class="slider-label">Number of Agents: <span id="agentsValue">25</span></label>
+                    <input type="range" id="agentsSlider" min="5" max="100" value="25">
+                </div>
+            </div>
+
+            <div class="calculator-section">
+                <div class="results-grid">
+                    <div>
+                        <div class="result-label">Monthly Revenue/Agent</div>
+                        <div class="result-value" id="monthlyRevenue">$2,756</div>
+                    </div>
+                    <div>
+                        <div class="result-label">Gross Margin</div>
+                        <div class="result-value" style="color: #06b6d4;" id="grossMargin">43.9%</div>
+                    </div>
+                    <div>
+                        <div class="result-label">Annual EBITDA (<span id="agentCountDisplay">25</span> agents)</div>
+                        <div class="result-value" style="color: #22d3ee;" id="annualEBITDA">$363,300</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Unit Economics Scenarios -->
+        <div class="card">
+            <h2>Unit Economics by Scenario</h2>
+            <div class="bar-chart">
+                <div class="bar-group">
+                    <div class="bar-label">Low (30 calls/day)</div>
+                    <div class="bars">
+                        <div class="bar bar-revenue" style="width: 47%;">$2,362</div>
+                        <div class="bar bar-margin" style="width: 16%;">$817</div>
+                    </div>
+                </div>
+                <div class="bar-group">
+                    <div class="bar-label">Base (35 calls/day)</div>
+                    <div class="bars">
+                        <div class="bar bar-revenue" style="width: 55%;">$2,756</div>
+                        <div class="bar bar-margin" style="width: 24%;">$1,211</div>
+                    </div>
+                </div>
+                <div class="bar-group">
+                    <div class="bar-label">High (40 calls/day)</div>
+                    <div class="bars">
+                        <div class="bar bar-revenue" style="width: 63%;">$3,150</div>
+                        <div class="bar bar-margin" style="width: 32%;">$1,605</div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 2rem; margin-top: 1rem; font-size: 0.875rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 16px; height: 16px; background: #0ea5e9; border-radius: 2px;"></div>
+                    <span style="color: #94a3b8;">Monthly Revenue</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 16px; height: 16px; background: #06b6d4; border-radius: 2px;"></div>
+                    <span style="color: #94a3b8;">Gross Margin</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Growth Phases -->
+        <div class="card">
+            <h2>Growth Phase Projections</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phase</th>
+                            <th>Team Size</th>
+                            <th>Annual Revenue</th>
+                            <th>Annual EBITDA</th>
+                            <th>EBITDA Margin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="phase-name">Phase 1</td>
+                            <td>8 agents</td>
+                            <td style="font-weight: 600;">$264,000</td>
+                            <td style="color: #06b6d4; font-weight: 600;">$116,000</td>
+                            <td style="color: #22d3ee; font-weight: 600;">43.9%</td>
+                        </tr>
+                        <tr>
+                            <td class="phase-name">Phase 2</td>
+                            <td>25 agents</td>
+                            <td style="font-weight: 600;">$826,000</td>
+                            <td style="color: #06b6d4; font-weight: 600;">$363,000</td>
+                            <td style="color: #22d3ee; font-weight: 600;">43.9%</td>
+                        </tr>
+                        <tr>
+                            <td class="phase-name">Phase 3</td>
+                            <td>50 agents</td>
+                            <td style="font-weight: 600;">$1,650,000</td>
+                            <td style="color: #06b6d4; font-weight: 600;">$726,000</td>
+                            <td style="color: #22d3ee; font-weight: 600;">44.0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Use of Funds -->
+        <div class="card">
+            <h2>Use of Funds ($20,000 Seed)</h2>
+            <div class="use-funds-grid">
+                <div class="fund-item">
+                    <div class="fund-label">Legal & Entity Setup</div>
+                </div>
+                <div class="fund-item">
+                    <div class="fund-label">Initial Hiring & Training</div>
+                </div>
+                <div class="fund-item">
+                    <div class="fund-label">Office & Connectivity</div>
+                </div>
+                <div class="fund-item">
+                    <div class="fund-label">Working Capital Buffer</div>
+                </div>
+            </div>
+            <div class="time-to-launch">
+                <div style="font-size: 0.95rem; color: #94a3b8; margin-bottom: 0.5rem;">
+                    Time to Operational Readiness
+                </div>
+                <div class="time-value">8-10 Weeks</div>
+            </div>
+        </div>
+
+        <!-- Market Opportunity -->
+        <div class="card">
+            <h2>Market Opportunity</h2>
+            <div class="market-grid">
+                <div class="market-card tam">
+                    <div class="market-value tam-color">$2.3B</div>
+                    <div class="market-label">Total Addressable Market (TAM)</div>
+                </div>
+                <div class="market-card sam">
+                    <div class="market-value sam-color">$450M</div>
+                    <div class="market-label">Serviceable Available Market (SAM)</div>
+                </div>
+                <div class="market-card carriers">
+                    <div class="market-value carriers-color">550K</div>
+                    <div class="market-label">U.S. Registered Carriers</div>
+                </div>
+            </div>
+            <div class="market-description">
+                Target: U.S. trucking companies and 3PLs operating 5–50 trucks. Over 90% of carriers operate fleets under 50 trucks. At 50 agents, Project Andean captures less than 0.1% of TAM (~$1.6M annual revenue).
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>
+                Project Andean Logistics S.A.S. (Colombia) | 808 Holdings Co., Inc. (Delaware C-Corp)<br/>
+                A Logistics Command Center built by a logistics owner, for logistics owners.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const callsSlider = document.getElementById('callsSlider');
+        const agentsSlider = document.getElementById('agentsSlider');
+        const callsValue = document.getElementById('callsValue');
+        const agentsValue = document.getElementById('agentsValue');
+        const monthlyRevenue = document.getElementById('monthlyRevenue');
+        const grossMargin = document.getElementById('grossMargin');
+        const annualEBITDA = document.getElementById('annualEBITDA');
+        const agentCountDisplay = document.getElementById('agentCountDisplay');
+
+        const pricePerCall = 3.75;
+        const workingDaysPerMonth = 21;
+        const agentCost = 1545;
+
+        function calculateMetrics() {
+            const calls = parseInt(callsSlider.value);
+            const agents = parseInt(agentsSlider.value);
+
+            const revenue = calls * pricePerCall * workingDaysPerMonth;
+            const margin = ((revenue - agentCost) / revenue * 100).toFixed(1);
+            const ebitda = agents * (revenue - agentCost) * 12;
+
+            callsValue.textContent = calls;
+            agentsValue.textContent = agents;
+            monthlyRevenue.textContent = '$' + revenue.toLocaleString();
+            grossMargin.textContent = margin + '%';
+            annualEBITDA.textContent = '$' + ebitda.toLocaleString();
+            agentCountDisplay.textContent = agents;
+        }
+
+        callsSlider.addEventListener('input', calculateMetrics);
+        agentsSlider.addEventListener('input', calculateMetrics);
+
+        // Initialize
+        calculateMetrics();
+    </script>
+</body>
+</html>
