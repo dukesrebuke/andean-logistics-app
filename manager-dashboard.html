@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andean Dispatch | Manager Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #131826;
+            --bg-card: #1a2032;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #0ea5e9;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #1e293b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Login Screen */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0e1a 0%, #131826 50%, #1a2032 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            border-radius: 50%;
+            filter: blur(60px);
+        }
+
+        .login-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .login-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: 'Work Sans', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: 8px;
+            color: var(--bg-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .topbar {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .topbar-brand {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .btn-logout {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .main-container {
+            padding: 2rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-primary);
+        }
+
+        .metric-subtext {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .metric-trend {
+            display: inline-block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .metric-trend.up {
+            color: var(--success);
+        }
+
+        .metric-trend.down {
+            color: var(--danger);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1400px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .agent-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .agent-table th {
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .agent-table td {
+            padding: 1rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .agent-table tr:hover {
+            background: rgba(0, 217, 255, 0.03);
+        }
+
+        .agent-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .agent-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .agent-status.active {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .agent-status.break {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .agent-status.offline {
+            background: rgba(100, 116, 139, 0.15);
+            color: var(--text-muted);
+        }
+
+        .performance-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .performance-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 3px;
+        }
+
+        .alert-item {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--warning);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .alert-item.critical {
+            border-left-color: var(--danger);
+        }
+
+        .alert-item.success {
+            border-left-color: var(--success);
+        }
+
+        .alert-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .alert-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .alert-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .revenue-chart {
+            margin: 2rem 0;
+        }
+
+        .chart-bar-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            align-items: flex-end;
+        }
+
+        .chart-label {
+            width: 80px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .chart-bar {
+            height: 40px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 0.75rem;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+        }
+
+        .chart-bar:hover {
+            transform: translateX(5px);
+        }
+
+        .client-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .client-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .client-info {
+            flex: 1;
+        }
+
+        .client-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .client-loads {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .client-revenue {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-box">
+            <div class="login-logo">ANDEAN DISPATCH</div>
+            <div class="login-subtitle">Operations Manager Portal</div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Manager ID</label>
+                    <input type="text" class="form-input" id="managerId" placeholder="Enter your manager ID" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Access Code</label>
+                    <input type="password" class="form-input" id="accessCode" placeholder="******" required>
+                </div>
+                <button type="submit" class="btn-primary">Access Dashboard</button>
+            </form>
+            
+            <div style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+                Demo: Use any manager ID + code "MGR2026"
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <!-- Top Bar -->
+        <div class="topbar">
+            <div class="topbar-brand">ANDEAN DISPATCH</div>
+            <div class="topbar-user">
+                <div class="user-info">
+                    <div class="user-name" id="userName">Manager</div>
+                    <div class="user-role">Operations Manager</div>
+                </div>
+                <button class="btn-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Operations Dashboard</h1>
+                <p class="page-subtitle">Real-time oversight and performance analytics</p>
+            </div>
+
+            <!-- Metrics Row -->
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="metric-label">Total Revenue Today</div>
+                    <div class="metric-value">$892.50</div>
+                    <div class="metric-trend up">↑ 12.5% vs yesterday</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Active Agents</div>
+                    <div class="metric-value">8</div>
+                    <div class="metric-subtext">2 on break, 1 offline</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Total Calls Today</div>
+                    <div class="metric-value">238</div>
+                    <div class="metric-trend up">↑ 8.2% vs yesterday</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Avg Response Time</div>
+                    <div class="metric-value">4.2m</div>
+                    <div class="metric-trend up">↓ 0.8m vs yesterday</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Monthly Revenue</div>
+                    <div class="metric-value">$18,247</div>
+                    <div class="metric-subtext">27 days of January</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Active Loads</div>
+                    <div class="metric-value">34</div>
+                    <div class="metric-subtext">Across all clients</div>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Agent Performance -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Agent Performance</h2>
+                    </div>
+                    
+                    <table class="agent-table">
+                        <thead>
+                            <tr>
+                                <th>Agent</th>
+                                <th>Status</th>
+                                <th>Calls Today</th>
+                                <th>Revenue</th>
+                                <th>Avg Response</th>
+                                <th>Performance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="agent-name">Maria G.</span></td>
+                                <td><span class="agent-status active">Active</span></td>
+                                <td>42</td>
+                                <td>$157.50</td>
+                                <td>3.8m</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 95%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="agent-name">Carlos R.</span></td>
+                                <td><span class="agent-status active">Active</span></td>
+                                <td>38</td>
+                                <td>$142.50</td>
+                                <td>4.1m</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 88%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="agent-name">Sofia M.</span></td>
+                                <td><span class="agent-status active">Active</span></td>
+                                <td>35</td>
+                                <td>$131.25</td>
+                                <td>4.5m</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 82%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="agent-name">Diego P.</span></td>
+                                <td><span class="agent-status break">Break</span></td>
+                                <td>31</td>
+                                <td>$116.25</td>
+                                <td>4.2m</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 78%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="agent-name">Andrea L.</span></td>
+                                <td><span class="agent-status active">Active</span></td>
+                                <td>29</td>
+                                <td>$108.75</td>
+                                <td>4.8m</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 75%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="agent-name">Roberto C.</span></td>
+                                <td><span class="agent-status active">Active</span></td>
+                                <td>27</td>
+                                <td>$101.25</td>
+                                <td>5.1m</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 70%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="agent-name">Laura V.</span></td>
+                                <td><span class="agent-status break">Break</span></td>
+                                <td>24</td>
+                                <td>$90.00</td>
+                                <td>4.3m</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 68%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="agent-name">Miguel S.</span></td>
+                                <td><span class="agent-status active">Active</span></td>
+                                <td>12</td>
+                                <td>$45.00</td>
+                                <td>6.2m</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 45%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Alerts & Notifications -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Alerts</h2>
+                    </div>
+                    
+                    <div class="alert-item critical">
+                        <div class="alert-title">Exception: LD-2859</div>
+                        <div class="alert-description">Weather delay - broker notification pending</div>
+                        <div class="alert-time">5 minutes ago</div>
+                    </div>
+
+                    <div class="alert-item">
+                        <div class="alert-title">Agent Response Time</div>
+                        <div class="alert-description">Miguel S. averaging 6.2m - above 5m target</div>
+                        <div class="alert-time">12 minutes ago</div>
+                    </div>
+
+                    <div class="alert-item success">
+                        <div class="alert-title">Performance Milestone</div>
+                        <div class="alert-description">Maria G. completed 42 calls - daily record</div>
+                        <div class="alert-time">1 hour ago</div>
+                    </div>
+
+                    <div class="alert-item">
+                        <div class="alert-title">Client Check-in Overdue</div>
+                        <div class="alert-description">LD-2847 - last update 90 minutes ago</div>
+                        <div class="alert-time">1 hour ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revenue by Agent -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Revenue by Agent (Today)</h2>
+                </div>
+                
+                <div class="revenue-chart">
+                    <div class="chart-bar-group">
+                        <div class="chart-label">Maria G.</div>
+                        <div class="chart-bar" style="width: 95%;">$157.50</div>
+                    </div>
+                    <div class="chart-bar-group">
+                        <div class="chart-label">Carlos R.</div>
+                        <div class="chart-bar" style="width: 86%;">$142.50</div>
+                    </div>
+                    <div class="chart-bar-group">
+                        <div class="chart-label">Sofia M.</div>
+                        <div class="chart-bar" style="width: 79%;">$131.25</div>
+                    </div>
+                    <div class="chart-bar-group">
+                        <div class="chart-label">Diego P.</div>
+                        <div class="chart-bar" style="width: 70%;">$116.25</div>
+                    </div>
+                    <div class="chart-bar-group">
+                        <div class="chart-label">Andrea L.</div>
+                        <div class="chart-bar" style="width: 65%;">$108.75</div>
+                    </div>
+                    <div class="chart-bar-group">
+                        <div class="chart-label">Roberto C.</div>
+                        <div class="chart-bar" style="width: 61%;">$101.25</div>
+                    </div>
+                    <div class="chart-bar-group">
+                        <div class="chart-label">Laura V.</div>
+                        <div class="chart-bar" style="width: 54%;">$90.00</div>
+                    </div>
+                    <div class="chart-bar-group">
+                        <div class="chart-label">Miguel S.</div>
+                        <div class="chart-bar" style="width: 27%;">$45.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Client Overview -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Client Overview</h2>
+                </div>
+                
+                <div class="client-list">
+                    <div class="client-item">
+                        <div class="client-info">
+                            <div class="client-name">Swift Logistics LLC</div>
+                            <div class="client-loads">8 active loads · 43 calls this month</div>
+                        </div>
+                        <div class="client-revenue">$161.25</div>
+                    </div>
+                    
+                    <div class="client-item">
+                        <div class="client-info">
+                            <div class="client-name">Mountain Freight Co.</div>
+                            <div class="client-loads">6 active loads · 38 calls this month</div>
+                        </div>
+                        <div class="client-revenue">$142.50</div>
+                    </div>
+                    
+                    <div class="client-item">
+                        <div class="client-info">
+                            <div class="client-name">Pacific Transport</div>
+                            <div class="client-loads">5 active loads · 29 calls this month</div>
+                        </div>
+                        <div class="client-revenue">$108.75</div>
+                    </div>
+                    
+                    <div class="client-item">
+                        <div class="client-info">
+                            <div class="client-name">Lone Star Hauling</div>
+                            <div class="client-loads">4 active loads · 24 calls this month</div>
+                        </div>
+                        <div class="client-revenue">$90.00</div>
+                    </div>
+                    
+                    <div class="client-item">
+                        <div class="client-info">
+                            <div class="client-name">Great Lakes Carriers</div>
+                            <div class="client-loads">3 active loads · 18 calls this month</div>
+                        </div>
+                        <div class="client-revenue">$67.50</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const managerId = document.getElementById('managerId').value;
+            const accessCode = document.getElementById('accessCode').value;
+            
+            if (accessCode === 'MGR2026') {
+                document.getElementById('userName').textContent = managerId;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+            } else {
+                alert('Invalid access code');
+            }
+        }
+
+        function handleLogout() {
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('loginForm').reset();
+        }
+    </script>
+</body>
+</html>
