@@ -177,6 +177,69 @@
             50% { opacity: 0.8; transform: scale(1.1); }
         }
 
+        /* Scroll animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+        }
+
+        .animate-on-scroll.animated {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .animate-slide-left {
+            opacity: 0;
+        }
+
+        .animate-slide-left.animated {
+            animation: slideInLeft 0.8s ease forwards;
+        }
+
+        .animate-slide-right {
+            opacity: 0;
+        }
+
+        .animate-slide-right.animated {
+            animation: slideInRight 0.8s ease forwards;
+        }
+
         .hero-content {
             max-width: 1200px;
             padding: 2rem;
@@ -458,6 +521,155 @@
             margin-bottom: 1rem;
         }
 
+        /* Contact Section */
+        .contact {
+            padding: 6rem 2rem;
+            background: var(--bg-primary);
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-top: 2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Work Sans', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: 8px;
+            color: var(--bg-primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
+        }
+
+        .form-submit:active {
+            transform: translateY(0);
+        }
+
+        .form-success {
+            display: none;
+            padding: 1.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .form-success.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info-item {
+            text-align: center;
+        }
+
+        .contact-info-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info-value {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-form {
+                padding: 2rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
@@ -491,6 +703,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#portals">Portals</a></li>
+                <li><a href="#contact">Contact</a></li>
                 <li><a href="andean-logistics-simple.html">Business Plan</a></li>
                 <li><a href="dispatch-dashboard.html" class="nav-cta">Login</a></li>
             </ul>
@@ -523,7 +736,7 @@
     <!-- Features Section -->
     <section class="features" id="features">
         <div class="features-container">
-            <div class="section-header">
+            <div class="section-header animate-on-scroll">
                 <div class="section-tag">Why Andean Logistics</div>
                 <h2 class="section-title">Triple Arbitrage Advantage</h2>
                 <p class="section-description">
@@ -532,24 +745,24 @@
             </div>
 
             <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
+                <div class="feature-card animate-on-scroll" style="animation-delay: 0.1s;">
+                    <div class="feature-icon" style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--accent-primary);">$</div>
                     <h3 class="feature-title">Labor Arbitrage</h3>
                     <p class="feature-description">
                         Colombian dispatch talent at $875/month vs. U.S. domestic labor at $4,500-$6,000/month, without compromising quality.
                     </p>
                 </div>
 
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
+                <div class="feature-card animate-on-scroll" style="animation-delay: 0.2s;">
+                    <div class="feature-icon" style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--accent-primary);">◷</div>
                     <h3 class="feature-title">Timezone Alignment</h3>
                     <p class="feature-description">
                         Year-round EST/CST coverage. Our agents work normal daytime shifts while overlapping peak U.S. freight activity.
                     </p>
                 </div>
 
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
+                <div class="feature-card animate-on-scroll" style="animation-delay: 0.3s;">
+                    <div class="feature-icon" style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--accent-primary);">⚙</div>
                     <h3 class="feature-title">Structural Efficiency</h3>
                     <p class="feature-description">
                         Direct Independent Contractor model bypasses EOR platforms, eliminating non-value-adding costs while maintaining legal clarity.
@@ -562,7 +775,7 @@
     <!-- Portals Section -->
     <section class="portals" id="portals">
         <div class="portals-container">
-            <div class="section-header">
+            <div class="section-header animate-on-scroll">
                 <div class="section-tag">Platform Access</div>
                 <h2 class="section-title">Choose Your Portal</h2>
                 <p class="section-description">
@@ -571,8 +784,13 @@
             </div>
 
             <div class="portals-grid">
-                <a href="dispatch-dashboard.html" class="portal-card">
-                    <div class="portal-icon"></div>
+                <a href="dispatch-dashboard.html" class="portal-card animate-on-scroll" style="animation-delay: 0.1s;">
+                    <div class="portal-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
                     <h3 class="portal-title">Agent Portal</h3>
                     <p class="portal-description">
                         Dispatch agent workspace for logging calls, tracking loads, and managing real-time freight operations.
@@ -584,8 +802,14 @@
                     </div>
                 </a>
 
-                <a href="client-portal.html" class="portal-card">
-                    <div class="portal-icon"></div>
+                <a href="client-portal.html" class="portal-card animate-on-scroll" style="animation-delay: 0.2s;">
+                    <div class="portal-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </div>
                     <h3 class="portal-title">Client Portal</h3>
                     <p class="portal-description">
                         Complete transparency with live load tracking, activity feed, and itemized per-call billing breakdown.
@@ -597,8 +821,13 @@
                     </div>
                 </a>
 
-                <a href="manager-dashboard.html" class="portal-card">
-                    <div class="portal-icon"></div>
+                <a href="manager-dashboard.html" class="portal-card animate-on-scroll" style="animation-delay: 0.3s;">
+                    <div class="portal-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                    </div>
                     <h3 class="portal-title">Manager Portal</h3>
                     <p class="portal-description">
                         Operations oversight with agent performance metrics, revenue tracking, and real-time quality control.
@@ -617,21 +846,111 @@
     <section class="stats">
         <div class="stats-container">
             <div class="stats-grid">
-                <div class="stat-item">
+                <div class="stat-item animate-on-scroll" style="animation-delay: 0.1s;">
                     <div class="stat-value">$20K</div>
                     <div class="stat-label">Seed Capital</div>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item animate-on-scroll" style="animation-delay: 0.2s;">
                     <div class="stat-value">5-6</div>
                     <div class="stat-label">Break-even Agents</div>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item animate-on-scroll" style="animation-delay: 0.3s;">
                     <div class="stat-value">$3.75</div>
                     <div class="stat-label">Per-Call Rate</div>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item animate-on-scroll" style="animation-delay: 0.4s;">
                     <div class="stat-value">$2.3B</div>
                     <div class="stat-label">Total Addressable Market</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <div class="section-header animate-on-scroll">
+                <div class="section-tag">Get In Touch</div>
+                <h2 class="section-title">Contact Us</h2>
+                <p class="section-description">
+                    Interested in nearshore dispatch services? Let's discuss how we can support your operations.
+                </p>
+            </div>
+
+            <form class="contact-form animate-on-scroll" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <div class="form-row">
+                    <div class="form-field">
+                        <label class="form-label">First Name</label>
+                        <input type="text" class="form-input" name="firstName" required>
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" class="form-input" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" name="email" required>
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label">Company</label>
+                        <input type="text" class="form-input" name="company" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label class="form-label">Phone (Optional)</label>
+                        <input type="tel" class="form-input" name="phone">
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label">Fleet Size</label>
+                        <select class="form-select" name="fleetSize" required>
+                            <option value="">Select size...</option>
+                            <option value="5-10">5-10 trucks</option>
+                            <option value="11-25">11-25 trucks</option>
+                            <option value="26-50">26-50 trucks</option>
+                            <option value="50+">50+ trucks</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field full-width">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-textarea" name="message" placeholder="Tell us about your dispatch needs..." required></textarea>
+                    </div>
+                </div>
+
+                <!-- Hidden field for form tracking -->
+                <input type="hidden" name="_subject" value="New Contact Form Submission - Andean Logistics">
+                <input type="hidden" name="_next" value="https://palogistics.netlify.app/?success=true">
+
+                <button type="submit" class="form-submit">Send Message</button>
+
+                <div class="form-success" id="formSuccess">
+                    <strong>✓ Message Sent!</strong><br>
+                    Thank you for your interest. We'll get back to you within 24 hours.
+                </div>
+            </form>
+
+            <div class="contact-info animate-on-scroll">
+                <div class="contact-info-item">
+                    <div class="contact-info-icon" style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--accent-primary);">CO</div>
+                    <div class="contact-info-label">Location</div>
+                    <div class="contact-info-value">Medellín, Colombia</div>
+                </div>
+                <div class="contact-info-item">
+                    <div class="contact-info-icon" style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--accent-primary);">EST</div>
+                    <div class="contact-info-label">Business Hours</div>
+                    <div class="contact-info-value">EST/CST Coverage</div>
+                </div>
+                <div class="contact-info-item">
+                    <div class="contact-info-icon" style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--accent-primary);">808</div>
+                    <div class="contact-info-label">Entity</div>
+                    <div class="contact-info-value">808 Holdings Co.</div>
                 </div>
             </div>
         </div>
@@ -671,6 +990,150 @@
                     target.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations with Intersection Observer
+        const animateOnScroll = () => {
+            const observers = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animated');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            document.querySelectorAll('.animate-on-scroll, .animate-slide-left, .animate-slide-right').forEach(el => {
+                observers.observe(el);
+            });
+        };
+
+        // Initialize scroll animations
+        animateOnScroll();
+
+        // Parallax effect on hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-content');
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+                hero.style.opacity = 1 - (scrolled / window.innerHeight);
+            }
+        });
+
+        // Contact form handling
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const submitBtn = form.querySelector('.form-submit');
+            const successMsg = document.getElementById('formSuccess');
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            
+            // Simulate form submission (replace with actual API call)
+            setTimeout(() => {
+                // Show success message
+                successMsg.classList.add('active');
+                
+                // Reset form
+                form.reset();
+                
+                // Reset button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMsg.classList.remove('active');
+                }, 5000);
+            }, 1500);
+        }
+
+        // Add hover effect to cards
+        document.querySelectorAll('.feature-card, .portal-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Counter animation for stats
+        const animateCounters = () => {
+            const counters = document.querySelectorAll('.stat-value');
+            
+            counters.forEach(counter => {
+                const target = counter.textContent;
+                
+                // Only animate numbers
+                if (target.includes('$') || target.includes('-')) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting && !counter.classList.contains('counted')) {
+                                counter.classList.add('counted');
+                                
+                                // Extract number from string
+                                const numStr = target.replace(/[^0-9.-]/g, '');
+                                const num = parseFloat(numStr);
+                                const suffix = target.replace(numStr, '');
+                                const prefix = target.split(numStr)[0];
+                                
+                                let current = 0;
+                                const increment = num / 50;
+                                const duration = 1500;
+                                const stepTime = duration / 50;
+                                
+                                const timer = setInterval(() => {
+                                    current += increment;
+                                    if (current >= num) {
+                                        counter.textContent = target;
+                                        clearInterval(timer);
+                                    } else {
+                                        if (num > 100) {
+                                            counter.textContent = prefix + Math.floor(current) + suffix;
+                                        } else {
+                                            counter.textContent = prefix + current.toFixed(1) + suffix;
+                                        }
+                                    }
+                                }, stepTime);
+                            }
+                        });
+                    }, { threshold: 0.5 });
+                    
+                    observer.observe(counter);
+                }
+            });
+        };
+
+        // Initialize counter animations
+        animateCounters();
+
+        // Add active state to navigation on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const scrollY = window.pageYOffset;
+            
+            sections.forEach(section => {
+                const sectionHeight = section.offsetHeight;
+                const sectionTop = section.offsetTop - 100;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                    document.querySelectorAll('.nav-links a').forEach(link => {
+                        link.classList.remove('active-link');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active-link');
+                        }
                     });
                 }
             });
