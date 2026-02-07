@@ -339,6 +339,75 @@
             font-weight: 600;
         }
 
+        .search-filter-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-family: 'Work Sans', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: var(--bg-primary);
+        }
+
         .load-list {
             display: flex;
             flex-direction: column;
@@ -705,6 +774,24 @@
                     <div class="section-header">
                         <h2 class="section-title">Active Loads</h2>
                     </div>
+                    
+                    <!-- Search and Filter -->
+                    <div class="search-filter-container">
+                        <div class="search-box">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <input type="text" id="searchInput" placeholder="Search by Load ID, Driver, Origin, Destination..." oninput="filterLoads()">
+                        </div>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-status="all" onclick="filterByStatus('all')">All</button>
+                            <button class="filter-btn" data-status="in-transit" onclick="filterByStatus('in-transit')">In Transit</button>
+                            <button class="filter-btn" data-status="pending" onclick="filterByStatus('pending')">Pending</button>
+                            <button class="filter-btn" data-status="delivered" onclick="filterByStatus('delivered')">Delivered</button>
+                        </div>
+                    </div>
+                    
                     <div class="load-list" id="loadList">
                         <!-- Loads will be populated by JS -->
                     </div>
@@ -984,9 +1071,64 @@ dispatch@andeanlogistics.com`;
             window.location.href = mailtoLink;
         }
 
-        // Render Loads
+        // Filter State
+        let currentStatusFilter = 'all';
+        let currentSearchQuery = '';
+
+        // Filter by Status
+        function filterByStatus(status) {
+            currentStatusFilter = status;
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.status === status) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            renderLoads();
+        }
+
+        // Filter Loads (Search)
+        function filterLoads() {
+            currentSearchQuery = document.getElementById('searchInput').value.toLowerCase();
+            renderLoads();
+        }
+
+        // Render Loads with Filters
         function renderLoads() {
-            loadList.innerHTML = state.loads.map(load => `
+            // Filter loads based on status and search
+            let filteredLoads = state.loads;
+            
+            // Apply status filter
+            if (currentStatusFilter !== 'all') {
+                filteredLoads = filteredLoads.filter(load => load.status === currentStatusFilter);
+            }
+            
+            // Apply search filter
+            if (currentSearchQuery) {
+                filteredLoads = filteredLoads.filter(load => {
+                    return load.id.toLowerCase().includes(currentSearchQuery) ||
+                           load.driver.toLowerCase().includes(currentSearchQuery) ||
+                           load.origin.toLowerCase().includes(currentSearchQuery) ||
+                           load.destination.toLowerCase().includes(currentSearchQuery) ||
+                           load.broker.toLowerCase().includes(currentSearchQuery);
+                });
+            }
+            
+            // Render filtered loads
+            if (filteredLoads.length === 0) {
+                loadList.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+                        <div style="color: var(--text-secondary);">No loads found matching your criteria</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            loadList.innerHTML = filteredLoads.map(load => `
                 <div class="load-item ${state.selectedLoad === load.id ? 'active' : ''}" onclick="selectLoad('${load.id}')">
                     <div class="load-header">
                         <div class="load-id">${load.id}</div>
