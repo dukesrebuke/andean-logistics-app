@@ -665,7 +665,9 @@
                         <h2 class="section-title">Calls Over Time</h2>
                         <div style="font-size: 0.875rem; color: var(--text-secondary);">Last 7 days</div>
                     </div>
-                    <canvas id="callsChart" height="80"></canvas>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="callsChart"></canvas>
+                    </div>
                 </div>
 
                 <div class="section-card">
@@ -673,7 +675,9 @@
                         <h2 class="section-title">Revenue by Agent</h2>
                         <div style="font-size: 0.875rem; color: var(--text-secondary);">Today</div>
                     </div>
-                    <canvas id="revenueChart" height="80"></canvas>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
                 </div>
 
                 <div class="section-card">
@@ -681,7 +685,9 @@
                         <h2 class="section-title">Call Type Distribution</h2>
                         <div style="font-size: 0.875rem; color: var(--text-secondary);">Today</div>
                     </div>
-                    <canvas id="callTypeChart" height="80"></canvas>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="callTypeChart"></canvas>
+                    </div>
                 </div>
             </div>
 
@@ -1069,7 +1075,8 @@
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2,
                     plugins: {
                         legend: { display: false },
                         title: { display: false }
@@ -1078,11 +1085,11 @@
                         y: {
                             beginAtZero: true,
                             grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                            ticks: { color: '#94a3b8' }
+                            ticks: { color: '#94a3b8', font: { size: 11 } }
                         },
                         x: {
                             grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                            ticks: { color: '#94a3b8' }
+                            ticks: { color: '#94a3b8', font: { size: 11 } }
                         }
                     }
                 }
@@ -1102,7 +1109,8 @@
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2,
                     plugins: {
                         legend: { display: false }
                     },
@@ -1112,12 +1120,13 @@
                             grid: { color: 'rgba(255, 255, 255, 0.05)' },
                             ticks: { 
                                 color: '#94a3b8',
+                                font: { size: 11 },
                                 callback: function(value) { return '$' + value; }
                             }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#94a3b8' }
+                            ticks: { color: '#94a3b8', font: { size: 10 } }
                         }
                     }
                 }
@@ -1136,11 +1145,12 @@
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,
+                    aspectRatio: 1.5,
                     plugins: {
                         legend: {
                             position: 'bottom',
-                            labels: { color: '#94a3b8', padding: 15 }
+                            labels: { color: '#94a3b8', padding: 10, font: { size: 11 } }
                         }
                     }
                 }
