@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Andean Dispatch | Manager Dashboard</title>
+    <title>Andean Dispatch | Manager Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -318,6 +318,51 @@
             font-weight: 600;
         }
 
+        .btn-export {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-export:active {
+            transform: translateY(0);
+        }
+
+        .btn-export svg {
+            flex-shrink: 0;
+        }
+
+        @media print {
+            .btn-export, .theme-toggle, .btn-logout, nav {
+                display: none !important;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+
+            .section-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+
         .agent-table {
             width: 100%;
             border-collapse: collapse;
@@ -605,6 +650,14 @@
                 <div class="section-card">
                     <div class="section-header">
                         <h2 class="section-title">Agent Performance</h2>
+                        <button class="btn-export" onclick="exportReport()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Export Report (PDF)
+                        </button>
                     </div>
                     
                     <table class="agent-table">
@@ -868,6 +921,26 @@
             } else {
                 alert('Invalid access code');
             }
+        }
+
+        // Export Report as PDF
+        function exportReport() {
+            // Store original title
+            const originalTitle = document.title;
+            
+            // Set report title
+            const today = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            document.title = `Andean Logistics - Agent Performance Report - ${today}`;
+            
+            // Trigger browser print dialog (saves as PDF)
+            window.print();
+            
+            // Restore original title
+            document.title = originalTitle;
         }
 
         function handleLogout() {
