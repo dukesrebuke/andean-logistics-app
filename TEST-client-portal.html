@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧪 TEST - Andean Dispatch | Client Portal</title>
+    <title>Andean Dispatch | Client Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -140,6 +140,204 @@
         }
 
         /* Dashboard Layout */
+        /* Onboarding Wizard */
+        .onboarding-wizard {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 26, 0.98);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            backdrop-filter: blur(10px);
+        }
+
+        .onboarding-wizard.active {
+            display: flex;
+        }
+
+        .onboarding-container {
+            max-width: 700px;
+            width: 90%;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .onboarding-step {
+            display: none;
+            text-align: center;
+        }
+
+        .onboarding-step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .onboarding-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .onboarding-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .onboarding-text {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .onboarding-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .onboarding-feature {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .onboarding-checklist {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+            margin: 2rem auto;
+            max-width: 500px;
+        }
+
+        .onboarding-checklist li {
+            padding: 0.75rem 0;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .onboarding-checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .btn-onboarding-primary {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0.5rem;
+        }
+
+        .btn-onboarding-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-onboarding-secondary {
+            padding: 1rem 2rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0.5rem;
+        }
+
+        .btn-onboarding-secondary:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .btn-onboarding-skip {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: block;
+            margin: 1rem auto 0;
+        }
+
+        .btn-onboarding-skip:hover {
+            color: var(--text-secondary);
+        }
+
+        .onboarding-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .onboarding-progress {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .progress-dot.active {
+            background: var(--accent-primary);
+            width: 32px;
+            border-radius: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .onboarding-features {
+                grid-template-columns: 1fr;
+            }
+
+            .onboarding-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .onboarding-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Dashboard */
         .dashboard {
             display: none;
             min-height: 100vh;
@@ -427,6 +625,86 @@
             transition: width 0.3s ease;
         }
 
+        .btn-expand-map {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+        }
+
+        .btn-expand-map-header {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .btn-expand-map:hover,
+        .btn-expand-map-header:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Ensure map doesn't overlap header */
+        #map {
+            position: relative;
+            z-index: 1;
+        }
+
+        .leaflet-container {
+            z-index: 1 !important;
+        }
+
+        .map-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 2000;
+            display: none;
+        }
+
+        .map-fullscreen.active {
+            display: block;
+        }
+
+        .map-fullscreen-header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .map-fullscreen-content {
+            height: calc(100% - 60px);
+        }
+
+        .map-fullscreen-content #mapExpanded {
+            height: 100%;
+            width: 100%;
+        }
+
         /* Scrollbar Styling */
         ::-webkit-scrollbar {
             width: 8px;
@@ -467,6 +745,81 @@
             
             <div style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
                 Demo: Use any company name + code "CLIENT123"
+            </div>
+        </div>
+    </div>
+
+    <!-- Onboarding Wizard -->
+    <div class="onboarding-wizard" id="onboardingWizard">
+        <div class="onboarding-container">
+            <!-- Step 1: Welcome -->
+            <div class="onboarding-step active" id="step1">
+                <div class="onboarding-icon">👋</div>
+                <h2 class="onboarding-title">Welcome to Andean Logistics!</h2>
+                <p class="onboarding-text">
+                    We're excited to have you on board. Let's take a quick tour to help you get the most out of your client portal.
+                </p>
+                <div class="onboarding-features">
+                    <div class="onboarding-feature">
+                        <div class="feature-icon">📍</div>
+                        <div class="feature-text"><strong>Live Tracking</strong><br>Watch your loads in real-time</div>
+                    </div>
+                    <div class="onboarding-feature">
+                        <div class="feature-icon">💰</div>
+                        <div class="feature-text"><strong>Transparent Billing</strong><br>See every call itemized</div>
+                    </div>
+                    <div class="onboarding-feature">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-text"><strong>Analytics</strong><br>Track performance metrics</div>
+                    </div>
+                </div>
+                <button class="btn-onboarding-primary" onclick="nextOnboardingStep()">Get Started →</button>
+                <button class="btn-onboarding-skip" onclick="skipOnboarding()">Skip Tour</button>
+            </div>
+
+            <!-- Step 2: Live Tracking -->
+            <div class="onboarding-step" id="step2">
+                <div class="onboarding-icon">🗺️</div>
+                <h2 class="onboarding-title">Live Load Tracking</h2>
+                <p class="onboarding-text">
+                    Your dashboard features a real-time map showing all your active loads. Watch as drivers make progress toward their destinations.
+                </p>
+                <ul class="onboarding-checklist">
+                    <li>✓ Click any truck icon to see load details</li>
+                    <li>✓ View origin and destination markers</li>
+                    <li>✓ Track estimated arrival times</li>
+                    <li>✓ Monitor route progress</li>
+                </ul>
+                <div class="onboarding-buttons">
+                    <button class="btn-onboarding-secondary" onclick="previousOnboardingStep()">← Back</button>
+                    <button class="btn-onboarding-primary" onclick="nextOnboardingStep()">Next →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Billing & Reports -->
+            <div class="onboarding-step" id="step3">
+                <div class="onboarding-icon">📋</div>
+                <h2 class="onboarding-title">Billing & Activity</h2>
+                <p class="onboarding-text">
+                    Every dispatch call is tracked and itemized. You'll see exactly what you're paying for with complete transparency.
+                </p>
+                <ul class="onboarding-checklist">
+                    <li>✓ View all active loads in the table</li>
+                    <li>✓ See driver assignments and ETAs</li>
+                    <li>✓ Track call history and timestamps</li>
+                    <li>✓ Download invoices anytime</li>
+                </ul>
+                <div class="onboarding-buttons">
+                    <button class="btn-onboarding-secondary" onclick="previousOnboardingStep()">← Back</button>
+                    <button class="btn-onboarding-primary" onclick="completeOnboarding()">Complete Setup ✓</button>
+                </div>
+            </div>
+
+            <!-- Progress Indicator -->
+            <div class="onboarding-progress">
+                <div class="progress-dot active" onclick="goToOnboardingStep(1)"></div>
+                <div class="progress-dot" onclick="goToOnboardingStep(2)"></div>
+                <div class="progress-dot" onclick="goToOnboardingStep(3)"></div>
             </div>
         </div>
     </div>
@@ -518,17 +871,18 @@
             </div>
 
             <!-- Live Tracking Map -->
-            <div class="section-card" style="grid-column: 1 / -1;">
+            <div class="section-card">
                 <div class="section-header">
                     <h2 class="section-title">Live Load Tracking</h2>
-                    <div style="display: flex; gap: 1rem; align-items: center;">
-                        <span style="font-size: 0.875rem; color: var(--text-secondary);">
-                            <span style="display: inline-block; width: 10px; height: 10px; background: #10b981; border-radius: 50%; margin-right: 0.5rem;"></span>
-                            Your Loads
-                        </span>
-                    </div>
+                    <button class="btn-expand-map-header" onclick="expandMap()" title="Expand map">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                        </svg>
+                    </button>
                 </div>
-                <div id="map" style="height: 500px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);"></div>
+                <div style="position: relative;">
+                    <div id="map" style="height: 350px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);"></div>
+                </div>
             </div>
 
             <!-- Active Loads -->
@@ -708,20 +1062,99 @@
             if (accessCode === 'CLIENT123') {
                 document.getElementById('userName').textContent = companyName;
                 document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('dashboard').classList.add('active');
                 
-                // Initialize map after dashboard loads
-                function checkLeaflet() {
-                    if (typeof L !== 'undefined') {
-                        initClientMap();
-                    } else {
-                        setTimeout(checkLeaflet, 100);
+                // Check if first-time user
+                const hasCompletedOnboarding = localStorage.getItem('onboarding_completed');
+                
+                if (!hasCompletedOnboarding) {
+                    // Show onboarding
+                    document.getElementById('onboardingWizard').classList.add('active');
+                } else {
+                    // Go straight to dashboard
+                    document.getElementById('dashboard').classList.add('active');
+                    
+                    // Initialize map after dashboard loads
+                    function checkLeaflet() {
+                        if (typeof L !== 'undefined') {
+                            initClientMap();
+                        } else {
+                            setTimeout(checkLeaflet, 100);
+                        }
                     }
+                    setTimeout(checkLeaflet, 100);
                 }
-                setTimeout(checkLeaflet, 100);
             } else {
                 alert('Invalid access code');
             }
+        }
+
+        // Onboarding Functions
+        let currentOnboardingStep = 1;
+
+        function nextOnboardingStep() {
+            if (currentOnboardingStep < 3) {
+                document.getElementById(`step${currentOnboardingStep}`).classList.remove('active');
+                document.querySelectorAll('.progress-dot')[currentOnboardingStep - 1].classList.remove('active');
+                
+                currentOnboardingStep++;
+                
+                document.getElementById(`step${currentOnboardingStep}`).classList.add('active');
+                document.querySelectorAll('.progress-dot')[currentOnboardingStep - 1].classList.add('active');
+            }
+        }
+
+        function previousOnboardingStep() {
+            if (currentOnboardingStep > 1) {
+                document.getElementById(`step${currentOnboardingStep}`).classList.remove('active');
+                document.querySelectorAll('.progress-dot')[currentOnboardingStep - 1].classList.remove('active');
+                
+                currentOnboardingStep--;
+                
+                document.getElementById(`step${currentOnboardingStep}`).classList.add('active');
+                document.querySelectorAll('.progress-dot')[currentOnboardingStep - 1].classList.add('active');
+            }
+        }
+
+        function goToOnboardingStep(step) {
+            document.getElementById(`step${currentOnboardingStep}`).classList.remove('active');
+            document.querySelectorAll('.progress-dot')[currentOnboardingStep - 1].classList.remove('active');
+            
+            currentOnboardingStep = step;
+            
+            document.getElementById(`step${currentOnboardingStep}`).classList.add('active');
+            document.querySelectorAll('.progress-dot')[currentOnboardingStep - 1].classList.add('active');
+        }
+
+        function completeOnboarding() {
+            localStorage.setItem('onboarding_completed', 'true');
+            document.getElementById('onboardingWizard').classList.remove('active');
+            document.getElementById('dashboard').classList.add('active');
+            
+            // Initialize map
+            function checkLeaflet() {
+                if (typeof L !== 'undefined') {
+                    initClientMap();
+                } else {
+                    setTimeout(checkLeaflet, 100);
+                }
+            }
+            setTimeout(checkLeaflet, 100);
+        }
+
+        function skipOnboarding() {
+            localStorage.setItem('onboarding_completed', 'true');
+            document.getElementById('onboardingWizard').classList.remove('active');
+            document.getElementById('dashboard').classList.add('active');
+            
+            // Initialize map
+            function checkLeaflet() {
+                if (typeof L !== 'undefined') {
+                    initClientMap();
+                } else {
+                    setTimeout(checkLeaflet, 100);
+                }
+            }
+            setTimeout(checkLeaflet, 100);
         }
 
         function handleLogout() {
@@ -821,7 +1254,7 @@
                     font-size: 12px;
                     font-weight: bold;
                     color: white;
-                ">🚛</div>`,
+                "></div>`,
                 iconSize: [24, 24],
                 iconAnchor: [12, 12]
             });

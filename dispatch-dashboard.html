@@ -184,6 +184,16 @@
             color: var(--accent-primary);
         }
 
+        /* Ensure map doesn't overlap header */
+        #map {
+            position: relative;
+            z-index: 1;
+        }
+
+        .leaflet-container {
+            z-index: 1 !important;
+        }
+
         .topbar-user {
             display: flex;
             align-items: center;
@@ -420,6 +430,7 @@
             grid-template-columns: 2fr 1fr;
             gap: 2rem;
             margin-bottom: 2rem;
+            align-items: start;
         }
 
         @media (max-width: 1200px) {
@@ -433,6 +444,137 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 1.5rem;
+        }
+
+        .section-card.compact-map {
+            padding: 1rem;
+        }
+
+        .section-card.compact-map .section-header {
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .quick-stat {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem 0.5rem;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .quick-stat:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .quick-stat.success {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .quick-stat.warning {
+            border-color: rgba(245, 158, 11, 0.3);
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .quick-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .quick-stat.success .quick-stat-value {
+            color: var(--success);
+        }
+
+        .quick-stat.warning .quick-stat-value {
+            color: var(--warning);
+        }
+
+        .quick-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Exception Alerts */
+        .exception-alerts {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .exception-alert {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            transition: all 0.2s;
+        }
+
+        .exception-alert:hover {
+            border-color: var(--accent-primary);
+            transform: translateX(4px);
+        }
+
+        .exception-alert.warning {
+            border-left: 3px solid var(--warning);
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .exception-alert.danger {
+            border-left: 3px solid var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .exception-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .exception-icon.warning-icon {
+            background: var(--warning);
+            box-shadow: 0 0 8px var(--warning);
+        }
+
+        .exception-icon.danger-icon {
+            background: var(--danger);
+            box-shadow: 0 0 8px var(--danger);
+        }
+
+        .exception-content {
+            flex: 1;
+        }
+
+        .exception-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .exception-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
         }
 
         .section-header {
@@ -772,6 +914,80 @@
             opacity: 0.3;
         }
 
+        .btn-expand-map {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+        }
+
+        .btn-expand-map-header {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .btn-expand-map:hover,
+        .btn-expand-map-header:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .btn-expand-map svg {
+            stroke: currentColor;
+        }
+
+        .map-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 2000;
+            display: none;
+        }
+
+        .map-fullscreen.active {
+            display: block;
+        }
+
+        .map-fullscreen-header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .map-fullscreen-content {
+            height: calc(100% - 60px);
+        }
+
+        .map-fullscreen-content #mapExpanded {
+            height: 100%;
+            width: 100%;
+        }
+
         /* Scrollbar Styling */
         ::-webkit-scrollbar {
             width: 8px;
@@ -865,93 +1081,131 @@
             <!-- Content Grid -->
             <div class="content-grid">
                 <!-- Live Tracking Map -->
-                <div class="section-card" style="grid-column: 1 / -1;">
+                <div class="section-card compact-map">
                     <div class="section-header">
                         <h2 class="section-title">Live Load Tracking</h2>
-                        <div style="display: flex; gap: 1rem; align-items: center;">
-                            <span style="font-size: 0.875rem; color: var(--text-secondary);">
-                                <span style="display: inline-block; width: 10px; height: 10px; background: var(--success); border-radius: 50%; margin-right: 0.5rem;"></span>
-                                On Time
-                            </span>
-                            <span style="font-size: 0.875rem; color: var(--text-secondary);">
-                                <span style="display: inline-block; width: 10px; height: 10px; background: var(--warning); border-radius: 50%; margin-right: 0.5rem;"></span>
-                                Delayed
-                            </span>
-                        </div>
-                    </div>
-                    <div id="map" style="height: 500px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);"></div>
-                </div>
-
-                <!-- Load Details Sidebar -->
-                <div class="section-card">
-                    <div class="section-header">
-                        <h2 class="section-title">Active Loads</h2>
-                    </div>
-                    
-                    <!-- Search and Filter -->
-                    <div class="search-filter-container">
-                        <div class="search-box">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.35-4.35"></path>
+                        <button class="btn-expand-map-header" onclick="expandMap()" title="Expand map">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
                             </svg>
-                            <input type="text" id="searchInput" placeholder="Search by Load ID, Driver, Origin, Destination..." oninput="filterLoads()">
+                        </button>
+                    </div>
+                    <div style="position: relative;">
+                        <div id="map" style="height: 120px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);"></div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="quick-stats">
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="activeRoutes">6</div>
+                            <div class="quick-stat-label">Active</div>
                         </div>
-                        <div class="filter-buttons">
-                            <button class="filter-btn active" data-status="all" onclick="filterByStatus('all')">All</button>
-                            <button class="filter-btn" data-status="in-transit" onclick="filterByStatus('in-transit')">In Transit</button>
-                            <button class="filter-btn" data-status="pending" onclick="filterByStatus('pending')">Pending</button>
-                            <button class="filter-btn" data-status="delivered" onclick="filterByStatus('delivered')">Delivered</button>
+                        <div class="quick-stat success">
+                            <div class="quick-stat-value" id="onTimeCount">5</div>
+                            <div class="quick-stat-label">On Time</div>
+                        </div>
+                        <div class="quick-stat warning">
+                            <div class="quick-stat-value" id="delayedCount">1</div>
+                            <div class="quick-stat-label">Delayed</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="avgSpeed">58</div>
+                            <div class="quick-stat-label">Avg mph</div>
                         </div>
                     </div>
-                    
-                    <div class="load-list" id="loadList">
-                        <!-- Loads will be populated by JS -->
+
+                    <!-- Exception Alerts -->
+                    <div class="exception-alerts">
+                        <div class="exception-alert warning">
+                            <div class="exception-icon warning-icon"></div>
+                            <div class="exception-content">
+                                <div class="exception-title">LD-2862 - Traffic Delay</div>
+                                <div class="exception-text">Phoenix route delayed 45 min</div>
+                            </div>
+                        </div>
+                        <div class="exception-alert danger">
+                            <div class="exception-icon danger-icon"></div>
+                            <div class="exception-content">
+                                <div class="exception-title">LD-2847 - Broker Callback</div>
+                                <div class="exception-text">TQL requesting status update</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Call Logger -->
-                <div class="section-card">
-                    <div class="section-header">
-                        <h2 class="section-title">Log Call</h2>
-                    </div>
-                    
-                    <div class="call-log-form">
-                        <form id="callLogForm" onsubmit="handleCallLog(event)">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label">Call Type</label>
-                                    <select class="form-select" id="callType" required>
-                                        <option value="">Select type...</option>
-                                        <option value="check-in">Driver Check-in</option>
-                                        <option value="broker-update">Broker Update</option>
-                                        <option value="exception">Exception Handling</option>
-                                        <option value="delivery-confirm">Delivery Confirmation</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Party</label>
-                                    <input type="text" class="form-input" id="callParty" placeholder="e.g., Driver John, CH Robinson" required>
-                                </div>
+                <!-- Right Column: Active Loads + Log Call -->
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <!-- Load Details Sidebar -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">Active Loads</h2>
+                        </div>
+                        
+                        <!-- Search and Filter -->
+                        <div class="search-filter-container">
+                            <div class="search-box">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.35-4.35"></path>
+                                </svg>
+                                <input type="text" id="searchInput" placeholder="Search by Load ID, Driver, Origin, Destination..." oninput="filterLoads()">
                             </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Notes</label>
-                                <textarea class="form-textarea" id="callNotes" placeholder="Call summary, updates, actions taken..." required></textarea>
+                            <div class="filter-buttons">
+                                <button class="filter-btn active" data-status="all" onclick="filterByStatus('all')">All</button>
+                                <button class="filter-btn" data-status="in-transit" onclick="filterByStatus('in-transit')">In Transit</button>
+                                <button class="filter-btn" data-status="pending" onclick="filterByStatus('pending')">Pending</button>
+                                <button class="filter-btn" data-status="delivered" onclick="filterByStatus('delivered')">Delivered</button>
                             </div>
-                            
-                            <button type="submit" class="btn-submit">Log Call</button>
-                        </form>
+                        </div>
+                        
+                        <div class="load-list" id="loadList">
+                            <!-- Loads will be populated by JS -->
+                        </div>
                     </div>
 
-                    <div class="section-header" style="margin-top: 2rem;">
-                        <h3 style="font-size: 1rem; color: var(--text-secondary);">Call History (Today)</h3>
-                    </div>
-                    
-                    <div class="call-history" id="callHistory">
-                        <div class="empty-state">
-                            <div class="empty-state-icon">📞</div>
-                            <div>No calls logged yet today</div>
+                    <!-- Call Logger -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">Log Call</h2>
+                        </div>
+                        
+                        <div class="call-log-form">
+                            <form id="callLogForm" onsubmit="handleCallLog(event)">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Call Type</label>
+                                        <select class="form-select" id="callType" required>
+                                            <option value="">Select type...</option>
+                                            <option value="check-in">Driver Check-in</option>
+                                            <option value="broker-update">Broker Update</option>
+                                            <option value="exception">Exception Handling</option>
+                                            <option value="delivery-confirm">Delivery Confirmation</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Party</label>
+                                        <input type="text" class="form-input" id="callParty" placeholder="e.g., Driver John, CH Robinson" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Notes</label>
+                                    <textarea class="form-textarea" id="callNotes" placeholder="Call summary, updates, actions taken..." required></textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn-submit">Log Call</button>
+                            </form>
+                        </div>
+
+                        <div class="section-header" style="margin-top: 2rem;">
+                            <h3 style="font-size: 1rem; color: var(--text-secondary);">Call History (Today)</h3>
+                        </div>
+                        
+                        <div class="call-history" id="callHistory">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📞</div>
+                                <div>No calls logged yet today</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -969,6 +1223,17 @@
             <div id="notificationsList">
                 <!-- Notifications populated by JS -->
             </div>
+        </div>
+    </div>
+
+    <!-- Fullscreen Map Modal -->
+    <div class="map-fullscreen" id="mapFullscreen">
+        <div class="map-fullscreen-header">
+            <h2 class="section-title">Live Load Tracking - Expanded View</h2>
+            <button class="btn-logout" onclick="closeExpandedMap()">Close</button>
+        </div>
+        <div class="map-fullscreen-content">
+            <div id="mapExpanded"></div>
         </div>
     </div>
 
@@ -1198,6 +1463,86 @@
             }
         }
 
+        // Expanded Map Functions
+        let expandedMap = null;
+        let expandedMarkers = {};
+
+        function expandMap() {
+            document.getElementById('mapFullscreen').classList.add('active');
+            
+            // Initialize expanded map
+            setTimeout(() => {
+                if (!expandedMap) {
+                    expandedMap = L.map('mapExpanded', {
+                        worldCopyJump: false,
+                        maxBounds: [[-90, -180], [90, 180]],
+                        maxBoundsViscosity: 1.0,
+                        scrollWheelZoom: true
+                    }).setView([39.8283, -98.5795], 4);
+                    
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                        attribution: '© OpenStreetMap © CARTO',
+                        maxZoom: 19,
+                        noWrap: true
+                    }).addTo(expandedMap);
+                    
+                    // Add all loads to expanded map
+                    state.loads.forEach(load => {
+                        const truckIcon = L.divIcon({
+                            className: 'truck-marker',
+                            html: `<div style="background: #10b981; width: 28px; height: 28px; border-radius: 50%; border: 3px solid #0a0e1a; box-shadow: 0 0 15px rgba(0, 217, 255, 0.5);"></div>`,
+                            iconSize: [28, 28],
+                            iconAnchor: [14, 14]
+                        });
+                        
+                        const marker = L.marker([load.currentLat, load.currentLng], { icon: truckIcon }).addTo(expandedMap);
+                        marker.bindPopup(`
+                            <div style="color: #1a2032; font-family: 'Work Sans', sans-serif;">
+                                <strong style="font-size: 1.2em; color: #00d9ff;">${load.id}</strong><br>
+                                <strong>Driver:</strong> ${load.driver}<br>
+                                <strong>Route:</strong> ${load.origin} → ${load.destination}<br>
+                                <strong>ETA:</strong> ${load.eta}<br>
+                                <strong>Status:</strong> <span style="color: #10b981; font-weight: 600;">IN TRANSIT</span>
+                            </div>
+                        `);
+                        
+                        L.polyline([load.originCoords, load.destCoords], {
+                            color: '#0ea5e9',
+                            weight: 3,
+                            opacity: 0.6,
+                            dashArray: '10, 10'
+                        }).addTo(expandedMap);
+                        
+                        L.circleMarker(load.originCoords, {
+                            radius: 8,
+                            fillColor: '#06b6d4',
+                            color: '#fff',
+                            weight: 2,
+                            opacity: 1,
+                            fillOpacity: 0.9
+                        }).addTo(expandedMap).bindPopup(`<strong>Origin:</strong> ${load.origin}`);
+                        
+                        L.circleMarker(load.destCoords, {
+                            radius: 8,
+                            fillColor: '#00d9ff',
+                            color: '#fff',
+                            weight: 2,
+                            opacity: 1,
+                            fillOpacity: 0.9
+                        }).addTo(expandedMap).bindPopup(`<strong>Destination:</strong> ${load.destination}`);
+                        
+                        expandedMarkers[load.id] = marker;
+                    });
+                } else {
+                    expandedMap.invalidateSize();
+                }
+            }, 100);
+        }
+
+        function closeExpandedMap() {
+            document.getElementById('mapFullscreen').classList.remove('active');
+        }
+
         function handleLogout() {
             state.currentUser = null;
             state.calls = [];
@@ -1396,7 +1741,7 @@ dispatch@andeanlogistics.com`;
             // Show success feedback
             const submitBtn = callLogForm.querySelector('.btn-submit');
             const originalText = submitBtn.textContent;
-            submitBtn.textContent = '✓ Call Logged';
+            submitBtn.textContent = 'Call Logged';
             submitBtn.style.background = 'var(--success)';
             setTimeout(() => {
                 submitBtn.textContent = originalText;
@@ -1504,13 +1849,7 @@ dispatch@andeanlogistics.com`;
                     border-radius: 50%;
                     border: 3px solid #0a0e1a;
                     box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 12px;
-                    font-weight: bold;
-                    color: white;
-                ">🚛</div>`,
+                "></div>`,
                 iconSize: [24, 24],
                 iconAnchor: [12, 12]
             });
@@ -1602,13 +1941,7 @@ dispatch@andeanlogistics.com`;
                                 border-radius: 50%;
                                 border: 3px solid #0a0e1a;
                                 box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                font-size: 12px;
-                                font-weight: bold;
-                                color: white;
-                            ">✓</div>`,
+                            "></div>`,
                             iconSize: [24, 24],
                             iconAnchor: [12, 12]
                         }));

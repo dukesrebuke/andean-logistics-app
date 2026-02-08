@@ -361,6 +361,36 @@
             flex-shrink: 0;
         }
 
+        .btn-expand-map-header {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .btn-expand-map-header:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Ensure map doesn't overlap header */
+        #map {
+            position: relative;
+            z-index: 1;
+        }
+
+        .leaflet-container {
+            z-index: 1 !important;
+        }
+
         @media print {
             .btn-export, .theme-toggle, .btn-logout, nav {
                 display: none !important;
@@ -653,9 +683,13 @@
             <div class="section-card" style="margin-bottom: 2rem;">
                 <div class="section-header">
                     <h2 class="section-title">Live Operations Overview</h2>
-                    <div style="font-size: 0.875rem; color: var(--text-secondary);">All active loads across clients</div>
+                    <button class="btn-expand-map-header" onclick="expandMap()" title="Expand map">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                        </svg>
+                    </button>
                 </div>
-                <div id="map" style="height: 500px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);"></div>
+                <div id="map" style="height: 350px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);"></div>
             </div>
 
             <!-- Analytics Charts -->
@@ -988,6 +1022,11 @@
             
             // Restore original title
             document.title = originalTitle;
+        }
+
+        function expandMap() {
+            // Simple alert for now - can add full modal later
+            alert('Expanded map view - click and drag to pan, scroll to zoom');
         }
 
         function handleLogout() {

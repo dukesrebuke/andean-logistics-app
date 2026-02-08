@@ -547,7 +547,7 @@
             padding: 1rem;
             font-size: 0.85rem;
             color: var(--text-muted);
-            text-align: left;
+            text-align: center;
         }
 
         .portal-credentials strong {
@@ -1218,12 +1218,12 @@
                             <circle cx="12" cy="12" r="3"></circle>
                         </svg>
                     </div>
-                    <h3 class="portal-title">Agent Portal</h3>
-                    <p class="portal-description">
+                    <h3 class="portal-title" data-i18n="portal-agent-title">Agent Portal</h3>
+                    <p class="portal-description" data-i18n="portal-agent-desc">
                         Dispatch agent workspace for logging calls, tracking loads, and managing real-time freight operations.
                     </p>
                     <div class="portal-credentials">
-                        <strong>Demo Login:</strong><br>
+                        <strong data-i18n="portal-agent-login">Demo Login:</strong><br>
                         Agent ID: Any name<br>
                         PIN: <strong>1234</strong>
                     </div>
@@ -1237,12 +1237,12 @@
                             <line x1="6" y1="20" x2="6" y2="14"></line>
                         </svg>
                     </div>
-                    <h3 class="portal-title">Client Portal</h3>
-                    <p class="portal-description">
+                    <h3 class="portal-title" data-i18n="portal-client-title">Client Portal</h3>
+                    <p class="portal-description" data-i18n="portal-client-desc">
                         Complete transparency with live load tracking, activity feed, and itemized per-call billing breakdown.
                     </p>
                     <div class="portal-credentials">
-                        <strong>Demo Login:</strong><br>
+                        <strong data-i18n="portal-agent-login">Demo Login:</strong><br>
                         Company: Any name<br>
                         Code: <strong>CLIENT123</strong>
                     </div>
@@ -1255,12 +1255,12 @@
                             <polyline points="17 6 23 6 23 12"></polyline>
                         </svg>
                     </div>
-                    <h3 class="portal-title">Manager Portal</h3>
-                    <p class="portal-description">
+                    <h3 class="portal-title" data-i18n="portal-manager-title">Manager Portal</h3>
+                    <p class="portal-description" data-i18n="portal-manager-desc">
                         Operations oversight with agent performance metrics, revenue tracking, and real-time quality control.
                     </p>
                     <div class="portal-credentials">
-                        <strong>Demo Login:</strong><br>
+                        <strong data-i18n="portal-agent-login">Demo Login:</strong><br>
                         Manager ID: Any name<br>
                         Code: <strong>MGR2026</strong>
                     </div>
@@ -1510,7 +1510,22 @@
                 'portals': 'Portals',
                 'contact': 'Contact',
                 'business-plan': 'Business Plan',
-                'login': 'Login'
+                'login': 'Login',
+                'portal-agent-title': 'Agent Portal',
+                'portal-agent-desc': 'Dispatch agent workspace for logging calls, tracking loads, and managing real-time freight operations.',
+                'portal-agent-login': 'Demo Login:',
+                'portal-client-title': 'Client Portal',
+                'portal-client-desc': 'Complete transparency with live load tracking, activity feed, and itemized per-call billing breakdown.',
+                'portal-manager-title': 'Manager Portal',
+                'portal-manager-desc': 'Operations oversight with agent performance metrics, revenue tracking, and real-time quality control.',
+                'calc-title': 'Cost Calculator',
+                'calc-subtitle': 'See your exact savings with transparent per-call pricing',
+                'fleet-size': 'Fleet Size',
+                'calls-per-day': 'Calls Per Day',
+                'monthly-cost': 'Your Monthly Cost',
+                'cost-per-truck': 'Cost Per Truck',
+                'you-save': 'You Save',
+                'vs-comparison': 'vs. In-House Dispatchers'
             },
             es: {
                 'hero-tag': 'Excelencia Nearshore',
@@ -1522,7 +1537,22 @@
                 'portals': 'Portales',
                 'contact': 'Contacto',
                 'business-plan': 'Plan de Negocio',
-                'login': 'Iniciar Sesión'
+                'login': 'Iniciar Sesión',
+                'portal-agent-title': 'Portal de Agente',
+                'portal-agent-desc': 'Espacio de trabajo para agentes de despacho para registrar llamadas, rastrear cargas y gestionar operaciones de carga en tiempo real.',
+                'portal-agent-login': 'Inicio de Demostración:',
+                'portal-client-title': 'Portal de Cliente',
+                'portal-client-desc': 'Transparencia completa con seguimiento de carga en vivo, feed de actividad y desglose de facturación por llamada.',
+                'portal-manager-title': 'Portal de Gerente',
+                'portal-manager-desc': 'Supervisión de operaciones con métricas de rendimiento de agentes, seguimiento de ingresos y control de calidad en tiempo real.',
+                'calc-title': 'Calculadora de Costos',
+                'calc-subtitle': 'Vea sus ahorros exactos con precios transparentes por llamada',
+                'fleet-size': 'Tamaño de Flota',
+                'calls-per-day': 'Llamadas Por Día',
+                'monthly-cost': 'Su Costo Mensual',
+                'cost-per-truck': 'Costo Por Camión',
+                'you-save': 'Usted Ahorra',
+                'vs-comparison': 'vs. Despachadores Internos'
             }
         };
 

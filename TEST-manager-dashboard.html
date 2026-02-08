@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         :root {
             --bg-primary: #0a0e1a;
@@ -296,6 +297,19 @@
             }
         }
 
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .section-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -345,6 +359,36 @@
 
         .btn-export svg {
             flex-shrink: 0;
+        }
+
+        .btn-expand-map-header {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .btn-expand-map-header:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Ensure map doesn't overlap header */
+        #map {
+            position: relative;
+            z-index: 1;
+        }
+
+        .leaflet-container {
+            z-index: 1 !important;
         }
 
         @media print {
@@ -639,9 +683,46 @@
             <div class="section-card" style="margin-bottom: 2rem;">
                 <div class="section-header">
                     <h2 class="section-title">Live Operations Overview</h2>
-                    <div style="font-size: 0.875rem; color: var(--text-secondary);">All active loads across clients</div>
+                    <button class="btn-expand-map-header" onclick="expandMap()" title="Expand map">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                        </svg>
+                    </button>
                 </div>
-                <div id="map" style="height: 500px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);"></div>
+                <div id="map" style="height: 350px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);"></div>
+            </div>
+
+            <!-- Analytics Charts -->
+            <div class="charts-grid">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Calls Over Time</h2>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Last 7 days</div>
+                    </div>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="callsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Revenue by Agent</h2>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Today</div>
+                    </div>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Call Type Distribution</h2>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Today</div>
+                    </div>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="callTypeChart"></canvas>
+                    </div>
+                </div>
             </div>
 
             <!-- Content Grid -->
@@ -943,6 +1024,11 @@
             document.title = originalTitle;
         }
 
+        function expandMap() {
+            // Simple alert for now - can add full modal later
+            alert('Expanded map view - click and drag to pan, scroll to zoom');
+        }
+
         function handleLogout() {
             document.getElementById('dashboard').classList.remove('active');
             document.getElementById('loginScreen').style.display = 'flex';
@@ -1008,6 +1094,116 @@
                 console.error('Map error:', error);
             }
         }
+
+        // Initialize Charts
+        function initCharts() {
+            // Calls Over Time (Line Chart)
+            const callsCtx = document.getElementById('callsChart').getContext('2d');
+            new Chart(callsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Calls',
+                        data: [185, 210, 198, 225, 238, 195, 180],
+                        borderColor: '#00d9ff',
+                        backgroundColor: 'rgba(0, 217, 255, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#94a3b8', font: { size: 11 } }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#94a3b8', font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+
+            // Revenue by Agent (Bar Chart)
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Carlos M.', 'Ana R.', 'Miguel S.', 'Sofia L.', 'Diego P.', 'Laura G.', 'Juan C.', 'Maria V.'],
+                    datasets: [{
+                        label: 'Revenue ($)',
+                        data: [131.25, 123.75, 116.25, 108.75, 101.25, 93.75, 86.25, 131.25],
+                        backgroundColor: '#0ea5e9'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { 
+                                color: '#94a3b8',
+                                font: { size: 11 },
+                                callback: function(value) { return '$' + value; }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8', font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+
+            // Call Type Distribution (Doughnut Chart)
+            const callTypeCtx = document.getElementById('callTypeChart').getContext('2d');
+            new Chart(callTypeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Check-ins', 'Broker Updates', 'Exceptions', 'Delivery Confirms'],
+                    datasets: [{
+                        data: [95, 68, 42, 33],
+                        backgroundColor: ['#00d9ff', '#0ea5e9', '#06b6d4', '#0284c7']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 1.5,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#94a3b8', padding: 10, font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize charts when dashboard loads
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                if (document.getElementById('callsChart')) {
+                    initCharts();
+                }
+            }, 500);
+        });
     </script>
 </body>
 </html>
